@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../AppContext';
 import '../styles/GroceriesPage.css';
-import { FaStar, FaShoppingBasket } from 'react-icons/fa';
+import { FaStar, FaShoppingBasket, FaArrowLeft } from 'react-icons/fa';
 
 function GroceriesPage() {
-  const { addToCart } = useContext(AppContext);
+  const { addToCart, setCurrentPage } = useContext(AppContext);
   const [groceries, setGroceries] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -63,6 +63,13 @@ function GroceriesPage() {
 
   return (
     <div className="container">
+      <button 
+        onClick={() => setCurrentPage('home')} 
+        className="back-btn"
+        style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', fontSize: '1rem' }}
+      >
+        <FaArrowLeft /> Back to Home
+      </button>
       <div className="groceries-header">
         <FaShoppingBasket className="groceries-icon" />
         <h2>Fresh Groceries</h2>

@@ -13,6 +13,9 @@ import MapView from './components/MapView'
 import DrinksPage from './components/DrinksPage'
 import FastFoodPage from './components/FastFoodPage'
 import GroceriesPage from './components/GroceriesPage'
+import DessertsPage from './components/DessertsPage'
+import AsianPage from './components/AsianPage'
+import ItalianPage from './components/ItalianPage'
 
 function App() {
   const { currentPage, showLoginModal, showCart } = useContext(AppContext)
@@ -35,6 +38,12 @@ function App() {
         return <FastFoodPage />
       case 'groceries':
         return <GroceriesPage />
+      case 'desserts':
+        return <DessertsPage />
+      case 'asian':
+        return <AsianPage />
+      case 'italian':
+        return <ItalianPage />
       default:
         return <HomePage />
     }

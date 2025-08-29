@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../AppContext';
 import '../styles/DrinksPage.css';
-import { FaStar, FaGlassMartiniAlt } from 'react-icons/fa';
+import { FaStar, FaGlassMartiniAlt, FaArrowLeft } from 'react-icons/fa';
 
 function DrinksPage() {
-  const { addToCart } = useContext(AppContext);
+  const { addToCart, setCurrentPage } = useContext(AppContext);
   const [drinks, setDrinks] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,6 +15,7 @@ function DrinksPage() {
   const fetchDrinks = async () => {
     try {
       const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita');
+      if (!response.ok) throw new Error('Failed to fetch drinks');
       const data = await response.json();
       
       if (data.drinks) {
@@ -53,6 +54,13 @@ function DrinksPage() {
 
   return (
     <div className="container">
+      <button 
+        onClick={() => setCurrentPage('home')} 
+        className="back-btn"
+        style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', fontSize: '1rem' }}
+      >
+        <FaArrowLeft /> Back to Home
+      </button>
       <div className="drinks-header">
         <FaGlassMartiniAlt className="drinks-icon" />
         <h2>Refreshing Drinks</h2>

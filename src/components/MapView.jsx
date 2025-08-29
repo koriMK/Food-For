@@ -26,8 +26,9 @@ function MapView() {
           setUserLocation([latitude, longitude]);
           setMapCenter([latitude, longitude]);
         },
-        () => {
-          console.log('Location access denied');
+        (error) => {
+          console.error('Geolocation error:', error.message);
+          // Could add user notification here
         }
       );
     }
@@ -54,7 +55,7 @@ function MapView() {
             </Marker>
           )}
           
-          {restaurants.map(restaurant => (
+          {restaurants.filter(restaurant => restaurant.coordinates && Array.isArray(restaurant.coordinates) && restaurant.coordinates.length === 2).map(restaurant => (
             <Marker 
               key={restaurant.id} 
               position={restaurant.coordinates}

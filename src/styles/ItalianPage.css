@@ -1,0 +1,133 @@
+.italian-header {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.italian-icon {
+  font-size: 3rem;
+  color: var(--error-color);
+  margin-bottom: 20px;
+}
+
+.italian-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--dark-gray);
+}
+
+.italian-header p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.italian-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  margin: 40px 0;
+}
+
+.italian-card {
+  background: var(--white);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.italian-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.italian-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.italian-info {
+  padding: 20px;
+}
+
+.italian-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--dark-gray);
+}
+
+.italian-description {
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.italian-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.italian-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--secondary-color);
+  font-weight: 500;
+}
+
+.star-icon {
+  color: #ffd700;
+}
+
+.italian-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.italian-price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.add-italian-btn {
+  background: var(--primary-color);
+  color: var(--white);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-italian-btn:hover {
+  background: var(--primary-dark);
+}
+
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .italian-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .italian-header h2 {
+    font-size: 2rem;
+  }
+  
+  .italian-icon {
+    font-size: 2.5rem;
+  }
+}

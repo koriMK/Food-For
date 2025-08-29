@@ -75,8 +75,8 @@ function DashboardPage() {
                 marginBottom: '15px'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                  <h4>{order.restaurant.name}</h4>
-                  <span style={{ color: 'var(--primary-color)', fontWeight: '500' }}>${order.total.toFixed(2)}</span>
+                  <h4>{order.restaurant?.name || 'Unknown Restaurant'}</h4>
+                  <span style={{ color: 'var(--primary-color)', fontWeight: '500' }}>${order.total?.toFixed(2) || '0.00'}</span>
                 </div>
                 <p style={{ color: '#666', marginBottom: '10px' }}>
                   {new Date(order.date).toLocaleString()} • {order.items.length} items

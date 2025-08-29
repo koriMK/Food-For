@@ -4,14 +4,24 @@ import '../styles/LoginModal.css'
 import { FaTimes } from 'react-icons/fa'
 
 function LoginModal() {
-  const { setShowLoginModal, handleLogin } = useContext(AppContext)
+  const { setShowLoginModal, handleLogin, handleRegister, loading } = useContext(AppContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    handleLogin(email)
+    if (isSignUp) {
+      if (password !== confirmPassword) {
+        alert('Passwords do not match')
+        return
+      }
+      await handleRegister(email, name, password)
+    } else {
+      await handleLogin(email, password)
+    }
   }
   
   return (
@@ -25,6 +35,18 @@ function LoginModal() {
         </div>
         <div className="modal-body">
           <form onSubmit={handleSubmit}>
+            {isSignUp && (
+              <div className="form-group">
+                <label className="form-label">Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+            )}
             <div className="form-group">
               <label className="form-label">Email</label>
               <input
@@ -51,12 +73,14 @@ function LoginModal() {
                 <input
                   type="password"
                   className="form-control"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
               </div>
             )}
-            <button type="submit" className="btn btn-block">
-              {isSignUp ? 'Sign Up' : 'Log In'}
+            <button type="submit" className="btn btn-block" disabled={loading}>
+              {loading ? 'Please wait...' : (isSignUp ? 'Sign Up' : 'Log In')}
             </button>
           </form>
           <p className="auth-toggle">

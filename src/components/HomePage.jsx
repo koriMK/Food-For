@@ -16,7 +16,10 @@ function HomePage() {
 
   const handleSearch = () => {
     if (!searchTerm.trim()) {
-      document.getElementById('restaurants-section').scrollIntoView({ behavior: 'smooth' });
+      const element = document.getElementById('restaurants-section');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
       return;
     }
 
@@ -33,7 +36,10 @@ function HomePage() {
       setSelectedRestaurant(matchingRestaurant);
       setCurrentPage('restaurant');
     } else {
-      document.getElementById('restaurants-section').scrollIntoView({ behavior: 'smooth' });
+      const element = document.getElementById('restaurants-section');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -74,6 +80,12 @@ function HomePage() {
                     setCurrentPage('fastfood');
                   } else if (category.name === 'Groceries') {
                     setCurrentPage('groceries');
+                  } else if (category.name === 'Desserts') {
+                    setCurrentPage('desserts');
+                  } else if (category.name === 'Asian') {
+                    setCurrentPage('asian');
+                  } else if (category.name === 'Italian') {
+                    setCurrentPage('italian');
                   }
                 }}
               >

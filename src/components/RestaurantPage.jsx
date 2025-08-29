@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../AppContext';
 import '../styles/RestaurantPage.css';
-import { FaStar, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaStar, FaClock, FaMapMarkerAlt, FaArrowLeft } from 'react-icons/fa';
 
 function RestaurantPage() {
   const { 
@@ -30,6 +30,13 @@ function RestaurantPage() {
   
   return (
     <div className="container">
+      <button 
+        onClick={() => setCurrentPage('home')} 
+        className="back-btn"
+        style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', fontSize: '1rem' }}
+      >
+        <FaArrowLeft /> Back to Home
+      </button>
       <div className="restaurant-header">
         <img 
           src={selectedRestaurant.image} 

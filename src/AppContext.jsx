@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
+import apiService from '../services/api'
 
 export const AppContext = createContext()
 
@@ -10,6 +11,7 @@ export const AppProvider = ({ children }) => {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showCart, setShowCart] = useState(false)
   const [orders, setOrders] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const categories = [
     { id: 1, name: 'Fast Food', icon: 'category-food' },
@@ -20,7 +22,7 @@ export const AppProvider = ({ children }) => {
     { id: 6, name: 'Italian', icon: 'category-food' },
   ]
 
-  const restaurants = [
+  const [restaurants, setRestaurants] = useState([
     {
       id: 1,
       name: 'Burger Palace',
@@ -61,9 +63,11 @@ export const AppProvider = ({ children }) => {
       categories: [4],
       coordinates: [40.7282, -74.0776],
     },
-  ]
+  ])
 
-  const menuItems = {
+  const [menuItems, setMenuItems] = useState({})
+
+  const staticMenuItems = {
     1: [
       {
         id: 101,
@@ -71,6 +75,7 @@ export const AppProvider = ({ children }) => {
         description: 'Beef patty with lettuce, tomato, and special sauce',
         price: 8.99,
         category: 'Mains',
+        image: '/images/burger.jpg',
       },
       {
         id: 102,
@@ -78,6 +83,7 @@ export const AppProvider = ({ children }) => {
         description: 'Classic burger with American cheese',
         price: 9.99,
         category: 'Mains',
+        image: '/images/burger.jpg',
       },
       {
         id: 103,
@@ -85,6 +91,7 @@ export const AppProvider = ({ children }) => {
         description: 'Classic burger with crispy bacon',
         price: 10.99,
         category: 'Mains',
+        image: '/images/burger.jpg',
       },
       {
         id: 104,
@@ -92,6 +99,7 @@ export const AppProvider = ({ children }) => {
         description: 'Crispy golden fries with sea salt',
         price: 3.99,
         category: 'Sides',
+        image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300',
       },
       {
         id: 105,
@@ -99,6 +107,7 @@ export const AppProvider = ({ children }) => {
         description: 'Creamy chocolate milkshake',
         price: 4.99,
         category: 'Drinks',
+        image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=300',
       },
     ],
     2: [
@@ -108,6 +117,7 @@ export const AppProvider = ({ children }) => {
         description: 'Classic pizza with tomato sauce and mozzarella',
         price: 12.99,
         category: 'Mains',
+        image: '/images/Pizza.jpg',
       },
       {
         id: 202,
@@ -115,6 +125,7 @@ export const AppProvider = ({ children }) => {
         description: 'Margherita pizza with pepperoni',
         price: 14.99,
         category: 'Mains',
+        image: '/images/Pizza.jpg',
       },
       {
         id: 203,
@@ -122,6 +133,7 @@ export const AppProvider = ({ children }) => {
         description: 'Toasted bread with garlic butter',
         price: 5.99,
         category: 'Sides',
+        image: 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=300',
       },
       {
         id: 204,
@@ -129,6 +141,7 @@ export const AppProvider = ({ children }) => {
         description: 'Classic Italian dessert',
         price: 6.99,
         category: 'Desserts',
+        image: '/images/dessert.jpg',
       },
     ],
     3: [
@@ -138,6 +151,7 @@ export const AppProvider = ({ children }) => {
         description: 'Crab, avocado and cucumber',
         price: 8.99,
         category: 'Mains',
+        image: '/images/sushi.jpg',
       },
       {
         id: 302,
@@ -145,6 +159,7 @@ export const AppProvider = ({ children }) => {
         description: 'Tuna with spicy mayo',
         price: 9.99,
         category: 'Mains',
+        image: '/images/sushi.jpg',
       },
       {
         id: 303,
@@ -152,6 +167,7 @@ export const AppProvider = ({ children }) => {
         description: 'Traditional Japanese soup',
         price: 3.99,
         category: 'Sides',
+        image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=300',
       },
       {
         id: 304,
@@ -159,6 +175,7 @@ export const AppProvider = ({ children }) => {
         description: 'Refreshing green tea flavor',
         price: 5.99,
         category: 'Desserts',
+        image: '/images/dessert.jpg',
       },
     ],
     4: [
@@ -168,6 +185,7 @@ export const AppProvider = ({ children }) => {
         description: 'Rich chocolate cake with fudge icing',
         price: 6.99,
         category: 'Desserts',
+        image: '/images/dessert.jpg',
       },
       {
         id: 402,
@@ -175,6 +193,7 @@ export const AppProvider = ({ children }) => {
         description: 'New York style cheesecake',
         price: 7.99,
         category: 'Desserts',
+        image: '/images/dessert.jpg',
       },
       {
         id: 403,
@@ -182,6 +201,7 @@ export const AppProvider = ({ children }) => {
         description: 'Vanilla ice cream with toppings',
         price: 5.99,
         category: 'Desserts',
+        image: '/images/dessert.jpg',
       },
       {
         id: 404,
@@ -189,6 +209,7 @@ export const AppProvider = ({ children }) => {
         description: 'Freshly brewed coffee',
         price: 2.99,
         category: 'Drinks',
+        image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300',
       },
     ],
   }
@@ -226,29 +247,121 @@ export const AppProvider = ({ children }) => {
       item.id === itemId ? { ...item, quantity: newQuantity } : item
     ))
   }
-  const handleLogin = (email, password) => {
-    setUser({ email, name: 'Ann Joe' })
-    setShowLoginModal(false)
+  const handleLogin = async (email, password) => {
+    try {
+      setLoading(true)
+      const response = await apiService.login(email, password)
+      setUser(response.user)
+      setShowLoginModal(false)
+      await loadUserOrders()
+    } catch (error) {
+      console.error('Login failed:', error)
+      alert('Login failed. Please check your credentials.')
+    } finally {
+      setLoading(false)
+    }
   }
   const handleLogout = () => {
+    apiService.logout()
     setUser(null)
+    setOrders([])
   }
-  const handleCheckout = (address, paymentMethod) => {
-    const newOrder = {
-      id: Date.now(),
-      items: [...cartItems],
-      total: orderTotal,
-      address,
-      paymentMethod,
-      status: 'preparing',
-      restaurant: restaurants.find(r => r.id === cartItems[0]?.restaurantId),
-      date: new Date().toISOString(),
+  const handleCheckout = async (address, paymentMethod) => {
+    try {
+      setLoading(true)
+      const orderData = {
+        restaurant_id: cartItems[0]?.restaurantId,
+        address,
+        payment_method: paymentMethod,
+        items: cartItems.map(item => ({
+          menu_item_id: item.id,
+          quantity: item.quantity,
+          price: item.price
+        }))
+      }
+      
+      await apiService.createOrder(orderData)
+      await loadUserOrders()
+      setCartItems([])
+      setShowCart(false)
+      setCurrentPage('dashboard')
+    } catch (error) {
+      console.error('Checkout failed:', error)
+      alert('Order failed. Please try again.')
+    } finally {
+      setLoading(false)
     }
-    setOrders([...orders, newOrder])
-    setCartItems([])
-    setShowCart(false)
-    setCurrentPage('dashboard')
   }
+
+  const loadRestaurants = async () => {
+    try {
+      const data = await apiService.getRestaurants()
+      setRestaurants(data.map(r => ({
+        ...r,
+        coordinates: [r.latitude, r.longitude],
+        minOrder: r.min_order,
+        deliveryTime: r.delivery_time
+      })))
+    } catch (error) {
+      console.error('Failed to load restaurants:', error)
+    }
+  }
+
+  const loadMenuItems = async () => {
+    try {
+      const menuData = {}
+      for (const restaurant of restaurants) {
+        const menu = await apiService.getRestaurantMenu(restaurant.id)
+        menuData[restaurant.id] = menu
+      }
+      setMenuItems(menuData)
+    } catch (error) {
+      console.error('Failed to load menu items:', error)
+      setMenuItems(staticMenuItems)
+    }
+  }
+
+  const loadUserOrders = async () => {
+    if (!user) return
+    try {
+      const userOrders = await apiService.getUserOrders()
+      setOrders(userOrders.map(order => ({
+        ...order,
+        date: order.created_at,
+        items: order.order_items
+      })))
+    } catch (error) {
+      console.error('Failed to load orders:', error)
+    }
+  }
+
+  const handleRegister = async (email, name, password) => {
+    try {
+      setLoading(true)
+      const response = await apiService.register(email, name, password)
+      setUser(response.user)
+      setShowLoginModal(false)
+    } catch (error) {
+      console.error('Registration failed:', error)
+      alert('Registration failed. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadRestaurants()
+  }, [])
+
+  useEffect(() => {
+    if (restaurants.length > 0) {
+      loadMenuItems()
+    }
+  }, [restaurants])
+
+  useEffect(() => {
+    loadUserOrders()
+  }, [user])
 
   return (
     <AppContext.Provider
@@ -269,16 +382,18 @@ export const AppProvider = ({ children }) => {
         setOrders,
         categories,
         restaurants,
-        menuItems,
+        menuItems: Object.keys(menuItems).length > 0 ? menuItems : staticMenuItems,
         cartTotal,
         deliveryFee,
         orderTotal,
+        loading,
         addToCart,
         removeFromCart,
         updateQuantity,
         handleLogin,
         handleLogout,
         handleCheckout,
+        handleRegister,
       }}
     >
       {children}

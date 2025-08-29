@@ -1,0 +1,133 @@
+.desserts-header {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.desserts-icon {
+  font-size: 3rem;
+  color: var(--secondary-color);
+  margin-bottom: 20px;
+}
+
+.desserts-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--dark-gray);
+}
+
+.desserts-header p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.desserts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  margin: 40px 0;
+}
+
+.dessert-card {
+  background: var(--white);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.dessert-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.dessert-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.dessert-info {
+  padding: 20px;
+}
+
+.dessert-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--dark-gray);
+}
+
+.dessert-description {
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.dessert-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.dessert-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--secondary-color);
+  font-weight: 500;
+}
+
+.star-icon {
+  color: #ffd700;
+}
+
+.dessert-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dessert-price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.add-dessert-btn {
+  background: var(--primary-color);
+  color: var(--white);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-dessert-btn:hover {
+  background: var(--primary-dark);
+}
+
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .desserts-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .desserts-header h2 {
+    font-size: 2rem;
+  }
+  
+  .desserts-icon {
+    font-size: 2.5rem;
+  }
+}

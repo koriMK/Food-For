@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../AppContext';
 import '../styles/FastFoodPage.css';
-import { FaStar, FaUtensils } from 'react-icons/fa';
+import { FaStar, FaUtensils, FaArrowLeft } from 'react-icons/fa';
 
 function FastFoodPage() {
-  const { addToCart } = useContext(AppContext);
+  const { addToCart, setCurrentPage } = useContext(AppContext);
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,6 +15,7 @@ function FastFoodPage() {
   const fetchFoods = async () => {
     try {
       const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=chicken');
+      if (!response.ok) throw new Error('Failed to fetch foods');
       const data = await response.json();
       
       if (data.meals) {
@@ -53,6 +54,13 @@ function FastFoodPage() {
 
   return (
     <div className="container">
+      <button 
+        onClick={() => setCurrentPage('home')} 
+        className="back-btn"
+        style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', fontSize: '1rem' }}
+      >
+        <FaArrowLeft /> Back to Home
+      </button>
       <div className="fastfood-header">
         <FaUtensils className="fastfood-icon" />
         <h2>Fast Food Favorites</h2>

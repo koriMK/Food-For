@@ -43,7 +43,7 @@ function CartSidebar() {
           cartItems.map(item => (
             <div key={item.id} className="cart-item">
               <img 
-                src="https://via.placeholder.com/80" 
+                src={item.image || "https://via.placeholder.com/80"} 
                 alt={item.name} 
                 className="cart-item-image" 
               />
